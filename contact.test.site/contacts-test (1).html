@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>تست مخاطبین</title>
+</head>
+<body>
+  <h2>دریافت مخاطبین (با اجازه شما)</h2>
+  <button onclick="getContacts()">نمایش مخاطبین</button>
+  <ul id="contactList"></ul>
+
+  <script>
+    async function getContacts() {
+      if ('contacts' in navigator && 'ContactsManager' in window) {
+        try {
+          const props = ['name', 'tel'];
+          const opts = { multiple: true };
+          const contacts = await navigator.contacts.select(props, opts);
+          const list = document.getElementById('contactList');
+          contacts.forEach(contact => {
+            const li = document.createElement('li');
+            li.textContent = `${contact.name} - ${contact.tel}`;
+            list.appendChild(li);
+          });
+        } catch (err) {
+          alert('اجازه ندادید یا مشکلی پیش اومد.');
+        }
+      } else {
+        alert('مرورگر شما این قابلیت رو پشتیبانی نمی‌کنه.');
+      }
+    }
+  </script>
+</body>
+</html>
